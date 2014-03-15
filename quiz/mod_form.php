@@ -387,7 +387,46 @@ class mod_quiz_mod_form extends moodleform_mod {
             $mform->disabledIf('feedbackboundaries[' . $i . ']', 'grade', 'eq', 0);
             $mform->disabledIf('feedbacktext[' . ($i + 1) . ']', 'grade', 'eq', 0);
         }
-
+		// -------------------------------------------------------------------------------
+        $mform->addElement('header', 'tincantrackinghdr', get_string('tincantracking', 'quiz'));
+        $mform->addHelpButton('tincantrackinghdr', 'tincantracking', 'quiz');
+		
+		// Enable Tin Can tracking? 
+        $mform->addElement('selectyesno', 'enabletincan', get_string('tincan', 'quiz'));
+        $mform->addHelpButton('enabletincan', 'tincan', 'quiz');
+		
+		//Add the activity id field
+		$mform->addElement('text', 'tincanactivityid', get_string('tincanactivityid', 'quiz'), array('size'=>'64'));
+		$mform->setType('tincanactivityid', PARAM_TEXT);
+        $mform->addRule('tincanactivityid', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
+        $mform->addHelpButton('tincanactivityid', 'tincanactivityid', 'quiz');
+		
+		//Add LRS endpoint
+		$mform->addElement('text', 'tincanlrsendpoint', get_string('tincanlrsendpoint', 'quiz'), array('size'=>'64'));
+		$mform->setType('tincanlrsendpoint', PARAM_TEXT);
+        $mform->addRule('tincanlrsendpoint', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
+        $mform->addHelpButton('tincanlrsendpoint', 'tincanlrsendpoint', 'quiz');
+		$mform->setDefault('tincanlrsendpoint','http://example.com/endpoint/'); 
+		
+		//Add basic authorisation login. TODO: OAuth
+		$mform->addElement('text', 'tincanlrslogin', get_string('tincanlrslogin', 'quiz'), array('size'=>'64'));
+		$mform->setType('tincanlrslogin', PARAM_TEXT);
+        $mform->addRule('tincanlrslogin', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
+        $mform->addHelpButton('tincanlrslogin', 'tincanlrslogin', 'quiz');
+		
+		//Add basic authorisation pass. TODO: OAuth
+		$mform->addElement('text', 'tincanlrspass', get_string('tincanlrspass', 'quiz'), array('size'=>'64'));
+		$mform->setType('tincanlrspass', PARAM_TEXT);
+        $mform->addRule('tincanlrspass', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
+        $mform->addHelpButton('tincanlrspass', 'tincanlrspass', 'quiz');
+		
+		//Add Tin Can version to use
+		$mform->addElement('text', 'tincanlrsversion', get_string('tincanlrsversion', 'quiz'), array('size'=>'64'));
+		$mform->setType('tincanlrsversion', PARAM_TEXT);
+        $mform->addRule('tincanlrsversion', get_string('maximumchars', '', 5), 'maxlength', 5, 'client');
+        $mform->addHelpButton('tincanlrsversion', 'tincanlrsversion', 'quiz');
+		$mform->setDefault('tincanlrsversion','1.0.0'); 
+		
         // -------------------------------------------------------------------------------
         $this->standard_coursemodule_elements();
 

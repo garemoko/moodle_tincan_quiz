@@ -45,6 +45,12 @@
         <FIELD NAME="delay2" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Delay that must be left between the second and subsequent attempt, in seconds."/>
         <FIELD NAME="showuserpicture" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Option to show the user's picture during the attempt and on the review page."/>
         <FIELD NAME="showblocks" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Whether blocks should be shown on the attempt.php and review.php pages."/>
+        <FIELD NAME="enabletincan" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Whether tin can tracking is enabled"/>
+        <FIELD NAME="tincanactivityid" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Activity id of the Moodle quiz" />
+		<FIELD NAME="tincanlrsendpoint" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="LRS endpoint" />
+		<FIELD NAME="tincanlrslogin" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="LRS credentials, login" />
+		<FIELD NAME="tincanlrspass" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="LRS credentials, password" />
+		<FIELD NAME="tincanlrsversion" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Specification version" />
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

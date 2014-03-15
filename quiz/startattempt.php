@@ -79,6 +79,34 @@ if ($quizobj->is_preview_user() && $forcenew) {
             array('quiz' => $quizobj->get_quizid(), 'userid' => $USER->id));
 }
 
+//If Tin Can tracking is enabled, track the attempt
+if ($quizobj->get_quiz()->enabletincan){
+	//build the statement object TODO: localise display properties
+	$statement = array( 
+		'actor' => tincan_getactor(), 
+		'verb' => array(
+			'id' => 'http://adlnet.gov/expapi/verbs/attempted',
+			'display' => array(
+				'en-US' => 'attempted',
+				'en-GB' => 'attempted',
+				),
+			),
+		'object' => array(
+			'id' => $quizobj->get_quiz()->tincanactivityid, 
+			'definition' => array(
+				'name' => array(
+					'en-US' => $quizobj->get_quiz()->name,
+					'en-GB' => $quizobj->get_quiz()->name,
+				), 
+			), 
+		), 
+	);
+	
+	//send it
+	tincan_send_statement($statement, $quizobj->get_quiz()->tincanlrsendpoint, $quizobj->get_quiz()->tincanlrslogin, $quizobj->get_quiz()->tincanlrspass, $quizobj->get_quiz()->tincanlrsversion);	
+}
+
+
 // Look for an existing attempt.
 $attempts = quiz_get_user_attempts($quizobj->get_quizid(), $USER->id, 'all', true);
 $lastattempt = end($attempts);

@@ -464,6 +464,78 @@ function quiz_repaginate($layout, $perpage, $shuffle = false) {
     return implode(',', $layout);
 }
 
+function tincan_json_encode($str)
+{
+	return str_replace('\\/', '/',json_encode($str));
+}
+
+function tincan_getactor()
+{
+	global $USER, $CFG;
+	if ($USER->email){
+		return array(
+			"name" => fullname($USER),
+			"mbox" => "mailto:".$USER->email,
+			"objectType" => "Agent"
+		);
+	}
+	else{
+		return array(
+			"name" => fullname($USER),
+			"account" => array(
+				"homePage" => $CFG->wwwroot,
+				"name" => $USER->id
+			),
+			"objectType" => "Agent"
+		);
+	}
+}
+
+function tincan_send_statement($statement, $endpoint, $basicLogin, $basicPass, $version) {
+
+	$streamopt = array(
+		'ssl' => array(
+			'verify-peer' => false, 
+			), 
+		'http' => array(
+			'method' => 'POST', 
+			'ignore_errors' => false, 
+			'header' => array(
+				'Authorization: Basic ' . base64_encode( $basicLogin . ':' . $basicPass), 
+				'Content-Type: application/json', 
+				'Accept: application/json, */*; q=0.01',
+				'X-Experience-API-Version: '.$version
+			), 
+			'content' => tincan_json_encode($statement), 
+		), 
+	);
+	$context = stream_context_create($streamopt);
+
+	$stream = fopen($endpoint . 'statements', 'rb', false, $context);
+	
+	switch($return_code){
+        case 200:
+            $ret = stream_get_contents($stream);
+			$meta = stream_get_meta_data($stream);
+		
+			if ($ret) {
+				$ret = json_decode($ret, TRUE);
+			}
+            break;
+        	default: //error
+            $ret = NULL;
+			$meta = $return_code;
+            break;
+    }
+	
+	return array(
+		'contents'=> $ret, 
+		'metadata'=> $meta
+	);
+}
+
+
+
 // Functions to do with quiz grades ////////////////////////////////////////////
 
 /**
